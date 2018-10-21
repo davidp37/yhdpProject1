@@ -65,11 +65,11 @@ def printLine(files=[]):
     for file in files:
         current = open(file, "r")
 
-        if not str(file)[:-4] == ".txt":
+        if not str(file)[-4:] == ".txt":
             print("NOT TEXT")
         else:
             file.readline()
-        file.close()
+        current.close()
 
 # Touches each file of a given array, changing its timestamp to the current time
 
@@ -77,7 +77,6 @@ def printLine(files=[]):
 def touch(files = []):
     for file in files:
         os.utime(file)
-
 
 
 
