@@ -30,6 +30,41 @@ if '/' in start:
 if "\\" in start:
     start = start[:start.find('\\')]
 
+
+# Takes user input to determine what actions to perform
+
+
+def start():
+    command = input ("Enter a command: ")
+    command = command.split()
+    choice = command[0]
+    file = command[1]
+    loop = True
+    while(loop):
+        switcher = {
+            '''
+            "D": fileTaker_D(file),
+            "R": fileTaker_R(file),
+            "A": fileTaker_A(file),
+            "N": fileTaker_N(file),
+            "E": fileTaker_E(file),
+            "T": fileTaker_T(file),
+            "<": fileTaker_<(file),
+            ">": fileTaker_>(file),
+            '''
+            "test": print("123"),
+            "T": def temp():
+                fileTaker_Test(file)
+    }
+        print(choice)
+        func = switcher.get(choice, lambda: "Error")
+        loop = False
+
+def fileTaker_Test(file = ""):
+    print("test")
+
+
+
 # Copies all files for a given file type in a given directory
 
 
@@ -77,6 +112,14 @@ def printLine(files=[]):
 def touch(files = []):
     for file in files:
         os.utime(file)
+
+
+# Starts program
+
+start()
+
+
+
 
 
 
