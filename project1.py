@@ -35,7 +35,7 @@ if "\\" in start:
 
 def copyDirect(direct, type):
     names = []
-    for file in os.listdir("C:"):
+    for file in os.listdir(direct):
         try:
             names = glob.glob('*'+type)
         except IOError:
