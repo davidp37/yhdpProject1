@@ -58,6 +58,28 @@ def copy(files = []):
         copy =  (str(name)[:len(str(name))-len(type)]) + ".dup" + type
         shutil.copy(name, copy)
 
+# Prints the first line of each file of a given array
+
+
+def printLine(files=[]):
+    for file in files:
+        current = open(file, "r")
+
+        if not str(file)[:-4] == ".txt":
+            print("NOT TEXT")
+        else:
+            file.readline()
+        file.close()
+
+# Touches each file of a given array, changing its timestamp to the current time
+
+
+def touch(files = []):
+    for file in files:
+        os.utime(file)
+
+
+
 
 #search("..", ".txt")
 
