@@ -78,6 +78,8 @@ def start():
         else:
             print("ERROR");
             loop = True
+        for entry in names:
+            print(os.path.abspath(entry))
         step2(names)
 
 # Takes the second input from the user to decide which of the files to mark as interesting
@@ -119,6 +121,9 @@ def step2(names):
         else:
             print("ERROR");
             loop = True
+
+        for entry in interesting:
+            print(os.path.abspath(entry))
         step3(interesting)
 
 
@@ -127,6 +132,8 @@ def step2(names):
 
 def step3(names):
     loop = True
+    if len(names)==0:
+        loop = False
     while loop:
         loop = False
         command = input("Enter a command: ")
@@ -150,6 +157,28 @@ def step3(names):
         else:
             print("ERROR")
             loop = True
+
+
+''' Takes a list of files and an integer, and returns only the files 
+    in the list that are smaller than the given integer in bytes '''
+
+
+def fileTaker_Less(names, size):
+    for i in range(len(names), 0, -1):
+        if not os.stat(names[i]).st_size <= size:
+            names.remove(i)
+    return names
+
+
+''' Takes a list of files and an integer, and returns only the files 
+    in the list that are Larger than the given integer in bytes '''
+
+
+def fileTaker_Greater(names, size):
+    for i in range(len(names), 0, -1):
+        if not os.stat(names[i]).st_size >= size:
+            names.remove(i)
+    return names
 
 
 # Copies all files for a given file type in a given directory
