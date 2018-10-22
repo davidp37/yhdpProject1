@@ -56,7 +56,50 @@ def start():
         loop = False
         '''
     loop = True
-    while(loop):
+    while loop:
+        command = input("Enter a command: ")
+        command = command.split()
+        choice = ""
+        file = ""
+        names = []
+        try:
+            choice = command[0]
+            file = command[1]
+        except IndexError:
+            print("")
+        loop = False
+        if file == "":
+            print("ERROR")
+            loop = True
+        elif choice == "D":
+            names = interesfileTaker_D(file)
+        elif choice == "R":
+            names = fileTaker_R(file)
+        elif choice == "A":
+            names = fileTaker_A(file)
+        elif choice == "N":
+            names = fileTaker_N(file)
+        elif choice == "E":
+            names = fileTaker_E(file)
+        elif choice == "T":
+            names = fileTaker_T(file)
+        elif choice == "<":
+            names = fileTaker_Less(file)
+        elif choice == ">":
+            names = fileTaker_Greater(file)
+        else:
+            print("ERROR");
+            loop = True
+        step2(names)
+
+
+# Takes the second input from the user to decide what to do with the interesting files
+
+
+def step2(names):
+    loop = True
+    while loop:
+        loop = False
         command = input("Enter a command: ")
         command = command.split()
         choice = ""
@@ -66,27 +109,18 @@ def start():
             file = command[1]
         except IndexError:
             print("")
-        loop = False
-        if choice == "D":
-            fileTaker_D(file)
-        elif choice == "R":
-            fileTaker_R(file)
-        elif choice == "A":
-            fileTaker_A(file)
-        elif choice == "N":
-            fileTaker_N(file)
-        elif choice == "E":
-            fileTaker_E(file)
-        elif choice == "T":
-            fileTaker_T(file)
-        elif choice == "<":
-            fileTaker_Less(file)
-        elif choice == ">":
-            fileTaker_Greater(file)
-        else:
-            print("ERROR");
+        if file == "":
+            print("ERROR")
             loop = True
-
+        elif choice == "F":
+            copy(names)
+        elif choice == "D":
+            printLine(names)
+        elif choice == "T":
+            touch(names)
+        else:
+            print("ERROR")
+            loop = True
 
 
 # Copies all files for a given file type in a given directory
