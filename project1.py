@@ -91,11 +91,14 @@ def step2(names):
         choice = ""
         file = ""
         interesting = []
+
         try:
             choice = command[0]
             file = command[1]
         except IndexError:
             print("")
+        if choice == "T":
+            file = ' '.join(command[1:])
         loop = False
         try:
             if choice == "A" and file == "":
