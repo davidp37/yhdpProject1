@@ -18,7 +18,7 @@ General Notes:
 - A : all files are interesting
 - N : search for only a particular name(with extension)
 - E : search for all files with a particular extension
-- T : text files that contain a given text
+- T : text files that contain a given textr
 - < : files whose sizes
 
 """
@@ -75,28 +75,54 @@ def start():
             names = interesfileTaker_D(file)
         elif choice == "R":
             names = fileTaker_R(file)
-        elif choice == "A":
-            names = fileTaker_A(file)
-        elif choice == "N":
-            names = fileTaker_N(file)
-        elif choice == "E":
-            names = fileTaker_E(file)
-        elif choice == "T":
-            names = fileTaker_T(file)
-        elif choice == "<":
-            names = fileTaker_Less(file)
-        elif choice == ">":
-            names = fileTaker_Greater(file)
         else:
             print("ERROR");
             loop = True
         step2(names)
 
-
-# Takes the second input from the user to decide what to do with the interesting files
+# Takes the second input from the user to decide which of the files to mark as interesting
 
 
 def step2(names):
+    loop = True
+    while loop:
+        command = input("Enter a command: ")
+        command = command.split()
+        choice = ""
+        file = ""
+        interesting = []
+        try:
+            choice = command[0]
+            file = command[1]
+        except IndexError:
+            print("")
+        loop = False
+        try:
+            if choice == "A" and file == "":
+                interesting = fileTaker_A(names)
+            elif choice == "N" and not file == "":
+                interesting = fileTaker_N(names, file)
+            elif choice == "E" and not file == "":
+                interesting = fileTaker_E(names, file)
+            elif choice == "T":
+                interesting = fileTaker_T(names, file)
+            elif choice == "<" and int(file) >= 0:
+                interesting = fileTaker_Less(names, file)
+            elif choice == ">" and int(file) >= 0:
+                interesting = fileTaker_Greater(names, file)
+        except ValueError:
+            print("Error")
+            loop = True
+        else:
+            print("ERROR");
+            loop = True
+        step3(interesting)
+
+
+# Takes the third input from the user to decide what to do with the interesting files
+
+
+def step3(names):
     loop = True
     while loop:
         loop = False
