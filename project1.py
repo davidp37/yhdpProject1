@@ -31,6 +31,62 @@ if "\\" in start:
     start = start[:start.find('\\')]
 
 
+# fileTaker_D: returns List object with files that are in this directory ONLY
+
+
+def fileTaker_D(path: Path):
+    fileList = []
+    try:
+        for file in os.listdir(path):
+            if os.path.exists(file) and os.path.isfile(file):
+                # print(os.path.abspath(file))
+                fileList.append(Path(os.path.abspath(file)))
+    except Exception as exceptObj:
+        print("ERROR: ", str(exceptObj))
+    return fileList
+
+
+# fileTaker_R: returns List object with files in this directory and ALL SUBDIRECTORIES
+
+
+def fileTaker_R(path: Path, fileList: list):
+    if os.path.exists(path) and path != os.getcwd():
+        os.chdir(path)
+    for name in os.listdir(path):
+        try:
+            if os.path.exists(name):
+                if os.path.isfile(name):
+                    # print(os.path.abspath(name))
+                    fileList.append(Path(os.path.abspath(name)))
+                elif os.path.isdir(name):
+                    fileTaker_R(Path(os.path.abspath(name)), fileList)
+        except Exception as exceptObj:
+            print("ERROR: ", str(exceptObj))
+    os.chdir("..")
+
+
+# sortPaths: Sorts every Path in the lis in lexicographical order and returns it
+
+
+def sortPaths(lis: list):
+    return sorted(lis, key=lambda p: (os.path.dirname(p), os.path.basename(p)))
+
+
+
+# printPaths: Prints out everything in the list
+
+
+def printPaths(lis: list):
+    for name in lis:
+        print(name)
+
+
+# fileTakers for Second Step
+
+
+
+
+
 # Takes user input to determine what actions to perform
 
 
@@ -72,7 +128,7 @@ def start():
             print("ERROR")
             loop = True
         elif choice == "D":
-            names = interesfileTaker_D(file)
+            names = fileTaker_D(file)
         elif choice == "R":
             names = fileTaker_R(file)
         elif choice == "A":
