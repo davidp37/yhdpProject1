@@ -46,8 +46,8 @@ def fileTaker_D(path: Path):
     return fileList
 
 
-# fileTaker_R: returns List object with files in this directory and ALL SUBDIRECTORIES
-
+# fileTaker_R: takes List object with file Paths in this directory and ALL SUBDIRECTORIES
+# ??? I'd better not change the original fileList ???
 
 def fileTaker_R(path: Path, fileList: list):
     if os.path.exists(path) and path != os.getcwd():
@@ -81,9 +81,18 @@ def printPaths(lis: list):
         print(name)
 
 
-# fileTakers for Second Step
+# fileTaker_N: Searches and returns the path to the "file"
 
 
+def fileTaker_N(fileList: list, file: str):
+    names = []
+    for path in fileList:
+        if os.path.basename(path) == file:
+            names.append(path)
+    return names
+
+
+# fileTaker_
 
 
 
@@ -117,7 +126,8 @@ def start():
         command = command.split()
         choice = ""
         file = ""
-        names = []
+        fileList = []       # stores Path objects for files from command D and R
+        names = []          # stores Path objects for interesting files
         try:
             choice = command[0]
             file = command[1]
@@ -128,11 +138,15 @@ def start():
             print("ERROR")
             loop = True
         elif choice == "D":
-            names = fileTaker_D(file)
+            fileList = fileTaker_D(file)
+            printPaths(sortPaths(fileList))
+            loop = True         # Should prevent the second try???
         elif choice == "R":
-            names = fileTaker_R(file)
+            fileTaker_R(file, fileList)
+            printPaths(sortPaths(fileList))
+            loop = True
         elif choice == "A":
-            names = fileTaker_A(file)
+            names = fileList[:]
         elif choice == "N":
             names = fileTaker_N(file)
         elif choice == "E":
