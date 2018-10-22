@@ -35,14 +35,12 @@ if "\\" in start:
 
 
 def start():
-    command = input ("Enter a command: ")
-    command = command.split()
-    choice = command[0]
-    file = command[1]
+
+    '''
     loop = True
     while(loop):
         switcher = {
-            '''
+            
             "D": fileTaker_D(file),
             "R": fileTaker_R(file),
             "A": fileTaker_A(file),
@@ -51,17 +49,43 @@ def start():
             "T": fileTaker_T(file),
             "<": fileTaker_<(file),
             ">": fileTaker_>(file),
-            '''
-            "test": print("123"),
-            "T": def temp():
-                fileTaker_Test(file)
-    }
+        }
         print(choice)
-        func = switcher.get(choice, lambda: "Error")
+        func = switcher.get(choice)
+        func("threui")
         loop = False
-
-def fileTaker_Test(file = ""):
-    print("test")
+        '''
+    loop = True
+    while(loop):
+        command = input("Enter a command: ")
+        command = command.split()
+        choice = ""
+        file = ""
+        try:
+            choice = command[0]
+            file = command[1]
+        except IndexError:
+            print("")
+        loop = False
+        if choice == "D":
+            fileTaker_D(file)
+        elif choice == "R":
+            fileTaker_R(file)
+        elif choice == "A":
+            fileTaker_A(file)
+        elif choice == "N":
+            fileTaker_N(file)
+        elif choice == "E":
+            fileTaker_E(file)
+        elif choice == "T":
+            fileTaker_T(file)
+        elif choice == "<":
+            fileTaker_Less(file)
+        elif choice == ">":
+            fileTaker_Greater(file)
+        else:
+            print("ERROR");
+            loop = True
 
 
 
