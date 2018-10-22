@@ -144,7 +144,7 @@ def copyDirect(direct, type):
 # Copies all files in a given array
 
 
-def copy(files = []):
+def copy(files):
     for name in files:
         print(name)
         print(str(name)[:len(str(name))-len(type)])
@@ -154,7 +154,7 @@ def copy(files = []):
 # Prints the first line of each file of a given array
 
 
-def printLine(files=[]):
+def printLine(files):
     for file in files:
         current = open(file, "r")
 
@@ -167,7 +167,7 @@ def printLine(files=[]):
 # Touches each file of a given array, changing its timestamp to the current time
 
 
-def touch(files = []):
+def touch(files):
     for file in files:
         os.utime(file)
 
@@ -177,10 +177,4 @@ def touch(files = []):
 start()
 
 
-
-
-
-
 #search("..", ".txt")
-
-
