@@ -18,7 +18,7 @@ General Notes:
 - A : all files are interesting
 - N : search for only a particular name(with extension)
 - E : search for all files with a particular extension
-- T : text files that contain a given text
+- T : text files that contain a given textr
 - < : files whose sizes
 
 """
@@ -29,71 +29,6 @@ if '/' in start:
     start = start[:start.find('/')]
 if "\\" in start:
     start = start[:start.find('\\')]
-
-
-# fileTaker_D: returns List object with files that are in this directory ONLY
-
-
-def fileTaker_D(path: Path):
-    fileList = []
-    try:
-        for file in os.listdir(path):
-            if os.path.exists(file) and os.path.isfile(file):
-                # print(os.path.abspath(file))
-                fileList.append(Path(os.path.abspath(file)))
-    except Exception as exceptObj:
-        print("ERROR: ", str(exceptObj))
-    return fileList
-
-
-# fileTaker_R: takes List object with file Paths in this directory and ALL SUBDIRECTORIES
-# ??? I'd better not change the original fileList ???
-
-def fileTaker_R(path: Path, fileList: list):
-    if os.path.exists(path) and path != os.getcwd():
-        os.chdir(path)
-    for name in os.listdir(path):
-        try:
-            if os.path.exists(name):
-                if os.path.isfile(name):
-                    # print(os.path.abspath(name))
-                    fileList.append(Path(os.path.abspath(name)))
-                elif os.path.isdir(name):
-                    fileTaker_R(Path(os.path.abspath(name)), fileList)
-        except Exception as exceptObj:
-            print("ERROR: ", str(exceptObj))
-    os.chdir("..")
-
-
-# sortPaths: Sorts every Path in the lis in lexicographical order and returns it
-
-
-def sortPaths(lis: list):
-    return sorted(lis, key=lambda p: (os.path.dirname(p), os.path.basename(p)))
-
-
-
-# printPaths: Prints out everything in the list
-
-
-def printPaths(lis: list):
-    for name in lis:
-        print(name)
-
-
-# fileTaker_N: Searches and returns the path to the "file"
-
-
-def fileTaker_N(fileList: list, file: str):
-    names = []
-    for path in fileList:
-        if os.path.basename(path) == file:
-            names.append(path)
-    return names
-
-
-# fileTaker_
-
 
 
 # Takes user input to determine what actions to perform
@@ -126,8 +61,7 @@ def start():
         command = command.split()
         choice = ""
         file = ""
-        fileList = []       # stores Path objects for files from command D and R
-        names = []          # stores Path objects for interesting files
+        names = []
         try:
             choice = command[0]
             file = command[1]
@@ -138,35 +72,60 @@ def start():
             print("ERROR")
             loop = True
         elif choice == "D":
-            fileList = fileTaker_D(file)
-            printPaths(sortPaths(fileList))
-            loop = True         # Should prevent the second try???
+            names = interesfileTaker_D(file)
         elif choice == "R":
-            fileTaker_R(file, fileList)
-            printPaths(sortPaths(fileList))
-            loop = True
-        elif choice == "A":
-            names = fileList[:]
-        elif choice == "N":
-            names = fileTaker_N(file)
-        elif choice == "E":
-            names = fileTaker_E(file)
-        elif choice == "T":
-            names = fileTaker_T(file)
-        elif choice == "<":
-            names = fileTaker_Less(file)
-        elif choice == ">":
-            names = fileTaker_Greater(file)
+            names = fileTaker_R(file)
         else:
             print("ERROR");
             loop = True
         step2(names)
 
-
-# Takes the second input from the user to decide what to do with the interesting files
+# Takes the second input from the user to decide which of the files to mark as interesting
 
 
 def step2(names):
+    loop = True
+    while loop:
+        command = input("Enter a command: ")
+        command = command.split()
+        choice = ""
+        file = ""
+        interesting = []
+
+        try:
+            choice = command[0]
+            file = command[1]
+        except IndexError:
+            print("")
+        if choice == "T":
+            file = ' '.join(command[1:])
+        loop = False
+        try:
+            if choice == "A" and file == "":
+                interesting = fileTaker_A(names)
+            elif choice == "N" and not file == "":
+                interesting = fileTaker_N(names, file)
+            elif choice == "E" and not file == "":
+                interesting = fileTaker_E(names, file)
+            elif choice == "T":
+                interesting = fileTaker_T(names, file)
+            elif choice == "<" and int(file) >= 0:
+                interesting = fileTaker_Less(names, file)
+            elif choice == ">" and int(file) >= 0:
+                interesting = fileTaker_Greater(names, file)
+        except ValueError:
+            print("Error")
+            loop = True
+        else:
+            print("ERROR");
+            loop = True
+        step3(interesting)
+
+
+# Takes the third input from the user to decide what to do with the interesting files
+
+
+def step3(names):
     loop = True
     while loop:
         loop = False
@@ -191,6 +150,116 @@ def step2(names):
         else:
             print("ERROR")
             loop = True
+
+
+# fileTaker_D: Returns List object with ONLY files in that directory 
+
+
+def fileTaker_D(path: Path):
+    fileList = []
+    try:
+        for file in os.listdir(path):
+            if os.path.exists(file) and os.path.isfile(file):
+                # print(os.path.abspath(file))
+                fileList.append(Path(os.path.abspath(file)))
+    except Exception as exceptObj:
+        print("ERROR: ", str(exceptObj))
+    return fileList
+
+
+
+# fileTaker_R: Returns List object with files in this directory and subdirectories
+
+
+def fileTaker_R(path: Path, fileList: list):
+    if os.path.exists(path) and path != os.getcwd():
+        os.chdir(path)
+    for name in os.listdir(path):
+        try:
+            if os.path.exists(name):
+                if os.path.isfile(name):
+                    # print(os.path.abspath(name))
+                    fileList.append(Path(os.path.abspath(name)))
+                elif os.path.isdir(name):
+                    fileTaker_R(Path(os.path.abspath(name)), fileList)
+        except Exception as exceptObj:
+            print("ERROR: ", str(exceptObj))
+    os.chdir("..")
+
+
+# sortPaths: sorts everything in the lis in lexicographical order and returns the sorted list
+
+
+def sortPaths(lis: list):
+    return sorted(lis, key=lambda p: (os.path.dirname(p), os.path.basename(p)))
+
+
+
+# printPaths: Prints out everything in the list
+
+
+def printPaths(lis: list):
+    for name in lis:
+        print(name)
+
+
+# fileTaker_A: all of the files found in the previous step are considered interesting
+# Not sure if even need this
+
+
+def fileTaker_A(names: list):
+    return names
+
+
+# fileTaker_N: returns List object with the Paths to the file whose name exactly match "file"
+
+
+def fileTaker_N(names: list, file: str):
+    lis = []
+    for p in names:
+        if os.path.basename(p) == file:
+            lis.append(p)
+    return lis
+
+
+# fileTaker_E: returns List object with Paths to files whose has an extention specified in "file"
+
+
+def fileTaker_E(names: list, file: str):
+    lis = []
+    for p in names:
+        root, ext = os.path.extention(os.path.basename(p))
+        if ext == file or ext == "." + file:
+            lis.append(p)
+    return lis
+
+    
+# fileTaker_T: returns List object of text files which contains strings specified by "file"
+
+
+def fileTaker_T(names: list, file: str):
+    lis = []
+    origin = os.getcwd()
+    for p in names:
+        if os.path.exists(p) and p != os.getcwd():
+            os.chdir(p)
+        try:
+            infile = open(os.path.basename(p), "r")
+            for line in infile:
+                i = 0
+                for word in line.split():
+                    if word == file.split()[i]:
+                        i += 1
+                        if i == len(file.split()):
+                            # string in "file" found in the text file
+                            lis.append(p)
+                            raise CheckNextPath
+                    else:
+                        i = 0
+        except CheckNextPath:
+            pass
+        except Exception as exceptObj:
+            print("ERROR: ", str(exceptObj), " is not a text file.")
 
 
 # Copies all files for a given file type in a given directory
