@@ -136,8 +136,6 @@ def fileTaker_T(names: [list], file: str)-> list:
     return lis
 
 
-
-
 ''' Takes a list of files and an integer, and returns only the files 
     in the list that are smaller than the given integer in bytes '''
 
@@ -311,6 +309,3 @@ def step3(names):
 # Starts program
 
 start()
-
-
-#search("..", ".txt")
