@@ -22,17 +22,8 @@ General Notes:
 - < : files whose sizes
 
 """
-global start
-start = os.path.abspath('.')
 
-if '/' in start:
-    start = start[:start.find('/')]
-if "\\" in start:
-    start = start[:start.find('\\')]
-
-
-# fileTaker_D: Returns List object with ONLY files in that directory 
-
+# fileTaker_D: Returns List object with ONLY files in that directory
 
 def fileTaker_D(path: Path):
     fileList = []
@@ -157,9 +148,6 @@ def fileTaker_Greater(names, size):
             del names[i]
     return names
 
-
-
-
 # Copies all files for a given file type in a given directory
 
 
@@ -183,9 +171,13 @@ def copyDirect(direct, type):
 
 def copy(files):
     for name in files:
-        print(name)
-        print(str(name)[:len(str(name))-len(type)])
-        copy =  (str(name)[:len(str(name))-len(type)]) + ".dup" + type
+        ext = 0
+        for i in range(0,len(str(name))-1):
+            if str(name)[-i] == ".":
+                ext = (-i)
+                break
+        type = str(name)[ext:]
+        copy =  (str(name)[:len(str(name))+ext]) + ".dup" + type
         shutil.copy(name, copy)
 
 # Prints the first line of each file of a given array
@@ -193,12 +185,13 @@ def copy(files):
 
 def printLine(files):
     for file in files:
-        current = open(file, "r")
-
-        if not str(file)[-4:] == ".txt":
-            print("NOT TEXT")
-        else:
-            file.readline()
+        current = open(os.path.basename(file), "r")
+        try:
+            for line in current:
+                print(line)
+                break
+        except Exception as e:
+            print("NOT TEXT " + str(e))
         current.close()
 
 # Touches each file of a given array, changing its timestamp to the current time
@@ -296,9 +289,9 @@ def step3(names):
         loop = False
         choice = input("Enter a command (step 3): ")
         if choice == "F":
-            copy(names)
-        elif choice == "D":
             printLine(names)
+        elif choice == "D":
+            copy(names)
         elif choice == "T":
             touch(names)
         else:
