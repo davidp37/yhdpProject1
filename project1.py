@@ -148,24 +148,6 @@ def fileTaker_Greater(names, size):
             del names[i]
     return names
 
-# Copies all files for a given file type in a given directory
-
-
-def copyDirect(direct, type):
-    names = []
-    for file in os.listdir(direct):
-        try:
-            names = glob.glob('*'+type)
-        except IOError:
-            print("error")
-    if not os.path.isdir(os.path.join(direct, "COPIES")):
-        os.mkdir(os.path.join(direct, "COPIES"))
-    for name in names:
-        print(name)
-        print(str(name)[:len(str(name))-len(type)])
-        dest =  (str(name)[:len(str(name))-len(type)]) + ".dup" + type
-        shutil.copy(name, dest)
-
 # Copies all files in a given array
 
 
@@ -246,30 +228,30 @@ def step2(names):
         command = input("Enter a command (step 2): ")
         command = command.split()
         choice = ""
-        file = ""
+        choice2 = ""
         interesting = []
 
         try:
             choice = command[0]
-            file = command[1]
+            choice2 = command[1]
         except IndexError:
             print("")
         if choice == "T":
-            file = ' '.join(command[1:])
+            choice2 = ' '.join(command[1:])
         loop = False
         try:
-            if choice == "A" and file == "":
+            if choice == "A" and choice2 == "":
                 interesting = fileTaker_A(names)
-            elif choice == "N" and not file == "":
-                interesting = fileTaker_N(names, file)
-            elif choice == "E" and not file == "":
-                interesting = fileTaker_E(names, file)
+            elif choice == "N" and not choice2 == "":
+                interesting = fileTaker_N(names, choice2)
+            elif choice == "E" and not choice2 == "":
+                interesting = fileTaker_E(names, choice2)
             elif choice == "T":
-                interesting = fileTaker_T(names, file)
-            elif choice == "<" and int(file) >= 0:
-                interesting = fileTaker_Less(names, file)
-            elif choice == ">" and int(file) >= 0:
-                interesting = fileTaker_Greater(names, file)
+                interesting = fileTaker_T(names, choice2)
+            elif choice == "<" and int(choice2) >= 0:
+                interesting = fileTaker_Less(names, choice2)
+            elif choice == ">" and int(choice2) >= 0:
+                interesting = fileTaker_Greater(names, choice2)
             else:
                 print("ERROR")
                 loop = True
