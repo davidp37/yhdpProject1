@@ -22,17 +22,8 @@ General Notes:
 - < : files whose sizes
 
 """
-global start
-start = os.path.abspath('.')
 
-if '/' in start:
-    start = start[:start.find('/')]
-if "\\" in start:
-    start = start[:start.find('\\')]
-
-
-# fileTaker_D: Returns List object with ONLY files in that directory 
-
+# fileTaker_D: Returns List object with ONLY files in that directory
 
 def fileTaker_D(path: Path)-> list:
     fileList = []
@@ -156,33 +147,19 @@ def fileTaker_Greater(names: list, size: int)->list:
             del names[i]
     return names
 
- 
-# Copies all files for a given file type in a given directory
 
-
-def copyDirect(direct, type):
-    names = []
-    for file in os.listdir(direct):
-        try:
-            names = glob.glob('*'+type)
-        except IOError:
-            print("error")
-    if not os.path.isdir(os.path.join(direct, "COPIES")):
-        os.mkdir(os.path.join(direct, "COPIES"))
-    for name in names:
-        print(name)
-        print(str(name)[:len(str(name))-len(type)])
-        dest =  (str(name)[:len(str(name))-len(type)]) + ".dup" + type
-        shutil.copy(name, dest)
-
-# Copies all files in a given array
+ # Copies all files in a given array
 
 
 def copy(files: list):
     for name in files:
-        print(name)
-        print(str(name)[:len(str(name))-len(type)])
-        copy =  (str(name)[:len(str(name))-len(type)]) + ".dup" + type
+        ext = 0
+        for i in range(0,len(str(name))-1):
+            if str(name)[-i] == ".":
+                ext = (-i)
+                break
+        type = str(name)[ext:]
+        copy =  (str(name)[:len(str(name))+ext]) + ".dup" + type
         shutil.copy(name, copy)
 
 # Prints the first line of each file of a given array
@@ -190,12 +167,13 @@ def copy(files: list):
 
 def printLine(files: list):
     for file in files:
-        current = open(file, "r")
-
-        if not str(file)[-4:] == ".txt":
-            print("NOT TEXT")
-        else:
-            file.readline()
+        current = open(os.path.basename(file), "r")
+        try:
+            for line in current:
+                print(line)
+                break
+        except Exception as e:
+            print("NOT TEXT " + str(e))
         current.close()
 
 # Touches each file of a given array, changing its timestamp to the current time
@@ -250,19 +228,19 @@ def step2(names: list):
         command = input("Enter a command (step 2): ")
         command = command.split()
         choice = ""
-        file = ""
+        choice2 = ""
         interesting = []
 
         try:
             choice = command[0]
-            file = command[1]
+            choice2 = command[1]
         except IndexError:
             print("")
         if choice == "T":
-            file = ' '.join(command[1:])
+            choice2 = ' '.join(command[1:])
         loop = False
         try:
-            if choice == "A" and file == "":
+            if choice == "A" and choice2 == "":
                 interesting = fileTaker_A(names)
             elif choice == "N" and not file == "":
                 interesting = fileTaker_N(names, file)
@@ -293,9 +271,9 @@ def step3(names: list):
         loop = False
         choice = input("Enter a command (step 3): ")
         if choice == "F":
-            copy(names)
-        elif choice == "D":
             printLine(names)
+        elif choice == "D":
+            copy(names)
         elif choice == "T":
             touch(names)
         else:
