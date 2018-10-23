@@ -77,14 +77,14 @@ def printPaths(_list: list):
 # Not sure if even need this
 
 
-def fileTaker_A(names: list):
+def fileTaker_A(names: list)->list:
     return names
 
 
 # fileTaker_N: returns List object with the Paths to the file whose name exactly match "file"
 
 
-def fileTaker_N(names: list, file: str):
+def fileTaker_N(names: list, file: str)->list:
     _list = []
     for p in names:
         if os.path.basename(p) == file:
@@ -95,7 +95,7 @@ def fileTaker_N(names: list, file: str):
 # fileTaker_E: returns List object with Paths to files whose has an extention specified in "file"
 
 
-def fileTaker_E(names: list, file: str):
+def fileTaker_E(names: list, file: str)->list:
     _list = []
     for p in names:
         root, ext = os.path.splitext(os.path.basename(p))
