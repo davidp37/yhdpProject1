@@ -59,8 +59,8 @@ def fileTaker_R(path: Path, fileList: list):
 # sortPaths: sorts everything in the lis in lexicographical order and returns the sorted list
 
 
-def sortPaths(lis: list)-> list:
-    std = sorted(lis, key=lambda p: (os.path.dirname(p), os.path.basename(p))).copy()
+def sortPaths(_list: list)-> list:
+    std = sorted(_list, key=lambda p: (os.path.dirname(p), os.path.basename(p))).copy()
     return std
 
 
