@@ -68,8 +68,8 @@ def sortPaths(lis: list)-> list:
 # printPaths: Prints out everything in the list
 
 
-def printPaths(lis: list):
-    for name in lis:
+def printPaths(_list: list):
+    for name in _list:
         print(name)
 
 
@@ -84,31 +84,31 @@ def fileTaker_A(names: list):
 # fileTaker_N: returns List object with the Paths to the file whose name exactly match "file"
 
 
-def fileTaker_N(names: list, file: str)->list:
-    lis = []
+def fileTaker_N(names: list, file: str):
+    _list = []
     for p in names:
         if os.path.basename(p) == file:
-            lis.append(p)
-    return lis
+            _list.append(p)
+    return _list
 
 
 # fileTaker_E: returns List object with Paths to files whose has an extention specified in "file"
 
 
-def fileTaker_E(names: list, file: str)->list:
-    lis = []
+def fileTaker_E(names: list, file: str):
+    _list = []
     for p in names:
         root, ext = os.path.splitext(os.path.basename(p))
         if ext == file or ext == "." + file:
-            lis.append(p)
-    return lis
+            _list.append(p)
+    return _list
 
     
 # fileTaker_T: returns List object of text files which contains strings specified by "file"
 
 
-def fileTaker_T(names: list, file: str)-> list:
-    lis = []
+def fileTaker_T(names: [list], file: str)-> list:
+    _list = []
     origin = os.getcwd()
     for p in names:
         found = False
@@ -118,12 +118,12 @@ def fileTaker_T(names: list, file: str)-> list:
             infile = open(os.path.basename(p), "r", encoding="ISO-8859-1")
             if file in infile.read():
                 # string in "file" found in the text file
-                lis.append(p)
+                _list.append(p)
                 found = True
         except Exception as exceptObj:
             print("ERROR: ", str(exceptObj), " is not a text file.")
         infile.close()
-    return lis
+    return _list
 
 
 ''' Takes a list of files and an integer, and returns only the files 
@@ -159,7 +159,7 @@ def copy(files: list):
                 ext = (-i)
                 break
         type = str(name)[ext:]
-        copy =  (str(name)[:len(str(name))+ext]) + ".dup" + type
+        copy = (str(name)[:len(str(name))+ext]) + ".dup" + type
         shutil.copy(name, copy)
 
 # Prints the first line of each file of a given array
@@ -242,16 +242,16 @@ def step2(names: list):
         try:
             if choice == "A" and choice2 == "":
                 interesting = fileTaker_A(names)
-            elif choice == "N" and not file == "":
-                interesting = fileTaker_N(names, file)
-            elif choice == "E" and not file == "":
-                interesting = fileTaker_E(names, file)
-            elif choice == "T" and not file == "":
-                interesting = fileTaker_T(names, file)
-            elif choice == "<" and int(file) >= 0:
-                interesting = fileTaker_Less(names, file)
-            elif choice == ">" and int(file) >= 0:
-                interesting = fileTaker_Greater(names, file)
+            elif choice == "N" and not choice2 == "":
+                interesting = fileTaker_N(names, choice2)
+            elif choice == "E" and not choice2 == "":
+                interesting = fileTaker_E(names, choice2)
+            elif choice == "T" and not choice2 == "":
+                interesting = fileTaker_T(names, choice2)
+            elif choice == "<" and int(choice2) >= 0:
+                interesting = fileTaker_Less(names, choice2)
+            elif choice == ">" and int(choice2) >= 0:
+                interesting = fileTaker_Greater(names, choice2)
             else:
                 print("ERROR")
                 loop = True
