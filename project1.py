@@ -18,7 +18,7 @@ General Notes:
 - A : all files are interesting
 - N : search for only a particular name(with extension)
 - E : search for all files with a particular extension
-- T : text files that contain a given textr
+- T : text files that contain a given text
 - < : files whose sizes
 
 """
@@ -124,18 +124,7 @@ def fileTaker_T(names: [list], file: [str])-> list:
         if os.path.exists(p) and os.path.dirname(p) != os.getcwd():
             os.chdir(os.path.dirname(p))
         try:
-            infile = open(os.path.basename(p), "r", encoding = "ISO-8859-1")
-            # for line in infile:
-            #     i = 0
-            #     for word in line.split():
-            #         if word == file.split()[i]:
-            #             i += 1
-            #             if i == len(file.split()):
-            #                 # string in "file" found in the text file
-            #                 lis.append(p)
-            #                 found = True
-            #         else:
-            #             i = 0
+            infile = open(os.path.basename(p), "r", encoding="ISO-8859-1")
             if file in infile.read():
                 # string in "file" found in the text file
                 lis.append(p)
@@ -146,6 +135,28 @@ def fileTaker_T(names: [list], file: [str])-> list:
     return lis
 
 
+''' Takes a list of files and an integer, and returns only the files 
+    in the list that are smaller than the given integer in bytes '''
+
+
+def fileTaker_Less(names, size):
+    for i in range(len(names)-1, -1, -1):
+        if os.stat(names[i]).st_size > int(size):
+            del names[i]
+    return names
+
+
+''' Takes a list of files and an integer, and returns only the files 
+    in the list that are Larger than the given integer in bytes '''
+
+
+def fileTaker_Greater(names, size):
+    for i in range(len(names)-1, -1, -1):
+        if os.stat(names[i]).st_size < int(size):
+            del names[i]
+    return names
+
+ 
 # Copies all files for a given file type in a given directory
 
 
@@ -200,25 +211,6 @@ def touch(files):
 
 def start():
 
-    '''
-    loop = True
-    while(loop):
-        switcher = {
-            
-            "D": fileTaker_D(file),
-            "R": fileTaker_R(file),
-            "A": fileTaker_A(file),
-            "N": fileTaker_N(file),
-            "E": fileTaker_E(file),
-            "T": fileTaker_T(file),
-            "<": fileTaker_<(file),
-            ">": fileTaker_>(file),
-        }
-        print(choice)
-        func = switcher.get(choice)
-        func("threui")
-        loop = False
-        '''
     loop = True
     while loop:
         command = input("Enter a command (start): ")
@@ -247,7 +239,7 @@ def start():
         else:
             print("ERROR")
             loop = True
-        step2(names)
+    step2(names)
 
 # Takes the second input from the user to decide which of the files to mark as interesting
 
@@ -285,11 +277,11 @@ def step2(names):
             else:
                 print("ERROR")
                 loop = True
-        except ValueError:
-            print("Error")
+        except ValueError as e:
+            print("Error" + str(e))
             loop = True
-        printPaths(interesting)
-        step3(interesting)
+    printPaths(interesting)
+    step3(interesting)
 
 
 # Takes the third input from the user to decide what to do with the interesting files
@@ -314,6 +306,3 @@ def step3(names):
 # Starts program
 
 start()
-
-
-#search("..", ".txt")
