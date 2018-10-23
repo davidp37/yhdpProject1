@@ -120,22 +120,26 @@ def fileTaker_T(names: [list], file: [str])-> list:
     lis = []
     origin = os.getcwd()
     for p in names:
-        found == False
+        found = False
         if os.path.exists(p) and os.path.dirname(p) != os.getcwd():
             os.chdir(os.path.dirname(p))
         try:
-            infile = open(os.path.basename(p), "r")
-            for line in infile:
-                i = 0
-                for word in line.split():
-                    if word == file.split()[i]:
-                        i += 1
-                        if i == len(file.split()):
-                            # string in "file" found in the text file
-                            lis.append(p)
-                            found = True
-                    else:
-                        i = 0
+            infile = open(os.path.basename(p), "r", encoding = "ISO-8859-1")
+            # for line in infile:
+            #     i = 0
+            #     for word in line.split():
+            #         if word == file.split()[i]:
+            #             i += 1
+            #             if i == len(file.split()):
+            #                 # string in "file" found in the text file
+            #                 lis.append(p)
+            #                 found = True
+            #         else:
+            #             i = 0
+            if file in infile.read():
+                # string in "file" found in the text file
+                lis.append(p)
+                found = True
         except Exception as exceptObj:
             print("ERROR: ", str(exceptObj), " is not a text file.")
         infile.close()
