@@ -25,7 +25,7 @@ General Notes:
 
 # fileTaker_D: Returns List object with ONLY files in that directory
 
-def fileTaker_D(path: Path):
+def fileTaker_D(path: Path)-> list:
     fileList = []
     try:
         for file in os.listdir(path):
@@ -37,8 +37,8 @@ def fileTaker_D(path: Path):
     return fileList
 
 
-# fileTaker_R: Returns List object with files in this directory and subdirectories
-
+# fileTaker_R: Recieves Path and list object and adds files in this directory and subdirectories to the given list
+# This function returns nothing.
 
 def fileTaker_R(path: Path, fileList: list):
     if os.path.exists(path) and path != os.getcwd():
@@ -59,8 +59,8 @@ def fileTaker_R(path: Path, fileList: list):
 # sortPaths: sorts everything in the lis in lexicographical order and returns the sorted list
 
 
-def sortPaths(lis: list):
-    std = sorted(lis, key=lambda p: (os.path.dirname(p), os.path.basename(p))).copy()
+def sortPaths(_list: list)-> list:
+    std = sorted(_list, key=lambda p: (os.path.dirname(p), os.path.basename(p))).copy()
     return std
 
 
@@ -116,7 +116,6 @@ def fileTaker_T(names: [list], file: str)-> list:
             os.chdir(os.path.dirname(p))
         try:
             infile = open(os.path.basename(p), "r", encoding="ISO-8859-1")
-
             if file in infile.read():
                 # string in "file" found in the text file
                 _list.append(p)
@@ -131,7 +130,7 @@ def fileTaker_T(names: [list], file: str)-> list:
     in the list that are smaller than the given integer in bytes '''
 
 
-def fileTaker_Less(names, size):
+def fileTaker_Less(names: list, size: int)->list:
     for i in range(len(names)-1, -1, -1):
         if os.stat(names[i]).st_size > int(size):
             del names[i]
@@ -142,16 +141,17 @@ def fileTaker_Less(names, size):
     in the list that are Larger than the given integer in bytes '''
 
 
-def fileTaker_Greater(names, size):
+def fileTaker_Greater(names: list, size: int)->list:
     for i in range(len(names)-1, -1, -1):
         if os.stat(names[i]).st_size < int(size):
             del names[i]
     return names
 
-# Copies all files in a given array
+
+ # Copies all files in a given array
 
 
-def copy(files):
+def copy(files: list):
     for name in files:
         ext = 0
         for i in range(0,len(str(name))-1):
@@ -165,7 +165,7 @@ def copy(files):
 # Prints the first line of each file of a given array
 
 
-def printLine(files):
+def printLine(files: list):
     for file in files:
         current = open(os.path.basename(file), "r")
         try:
@@ -179,7 +179,7 @@ def printLine(files):
 # Touches each file of a given array, changing its timestamp to the current time
 
 
-def touch(files):
+def touch(files: list):
     for file in files:
         os.utime(file)
 
@@ -222,7 +222,7 @@ def start():
 # Takes the second input from the user to decide which of the files to mark as interesting
 
 
-def step2(names):
+def step2(names: list):
     loop = True
     while loop:
         command = input("Enter a command (step 2): ")
@@ -265,7 +265,7 @@ def step2(names):
 # Takes the third input from the user to decide what to do with the interesting files
 
 
-def step3(names):
+def step3(names: list):
     loop = True
     while loop:
         loop = False
