@@ -3,7 +3,6 @@
 
 
 
-
 class mineSweeper:
   def __init__(self, height, length, bombs):
     
@@ -53,7 +52,7 @@ class mineSweeper:
     return y
 
   def check(self,x,y):
-    if self._board[x][y] == "B":
+    if self._board[x][y] == "-1":
       self._lose()
 
 
@@ -64,3 +63,5 @@ def start():
   bombs = input("Enter the number of bombs: ")
   game = mineSweeper(height,length,bombs)
   game.play()
+
+start()
