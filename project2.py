@@ -31,27 +31,25 @@ class mineSweeper:
       else:
         print("You have already chosen that coordinate")
       
-
-
-def chooseX(self):
-  xLoop = True
-  while(xLoop):
-    x = input("Select an x coordinate: ")
-    if x>self._length or x<0:
-      print("Invalid x")
-    else:
-      yloop = False
-  return x
-    
-def chooseY(self):
-  yLoop = True
-  while(yLoop):
-    y = input("Select a y coordinate: ")
-    if y>self._height or y<0:
-      print("Invalid y")
-    else:
-      yLoop = False
-  return y
+  def chooseX(self):
+    xLoop = True
+    while(xLoop):
+      x = input("Select an x coordinate: ")
+      if x>self._length or x<0:
+        print("Invalid x")
+      else:
+        yloop = False
+    return x
+      
+  def chooseY(self):
+    yLoop = True
+    while(yLoop):
+      y = input("Select a y coordinate: ")
+      if y>self._height or y<0:
+        print("Invalid y")
+      else:
+        yLoop = False
+    return y
 
 
 
