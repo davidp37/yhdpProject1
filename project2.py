@@ -22,14 +22,36 @@ class mineSweeper:
     self.choose()
 
   def select(self):
-    xLoop = True
-    while(xLoop):
-      x = input("Select an x coordinate: ")
-      if (x>length or x<0) and  :
-        xLoop = True
+    revealed = True
+    while(revealed):
+      x = self.chooseX()
+      y = self.chooseY()
+      if not self._revealed[x-1][y-1]:
+        revealed = False
       else:
-        print("Invalid X")
+        print("You have already chosen that coordinate")
+      
 
+
+def chooseX(self):
+  xLoop = True
+  while(xLoop):
+    x = input("Select an x coordinate: ")
+    if x>self._length or x<0:
+      print("Invalid x")
+    else:
+      yloop = False
+  return x
+    
+def chooseY(self):
+  yLoop = True
+  while(yLoop):
+    y = input("Select a y coordinate: ")
+    if y>self._height or y<0:
+      print("Invalid y")
+    else:
+      yLoop = False
+  return y
 
 
 
