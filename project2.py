@@ -23,6 +23,7 @@ class mineSweeper:
       if bombCoords[y][x] == 0:
         bombCoords[y][x] = 1
         n += 1
+
       return bombCoords
 
   def countBomb(self, bombCoords: [list])-> list:
