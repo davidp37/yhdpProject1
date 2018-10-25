@@ -6,14 +6,30 @@
 
 class mineSweeper:
   def __init__(self, height, length, bombs):
-    createMap(height,length,bombs)
+    
+    self._height = height
+    self._length = length
+    self._bombs = bombs
+    self._revealed = []
+    self._map = self.createMap(height,length,bombs)
 
 
   def createMap(self,h,l,b):
     print("")
 
   def play(self):
-    print("")
+    self.select()
+    self.choose()
+
+  def select(self):
+    xLoop = True
+    while(xLoop):
+      x = input("Select an x coordinate: ")
+      if (x>length or x<0) and  :
+        xLoop = True
+      else:
+        print("Invalid X")
+
 
 
 
