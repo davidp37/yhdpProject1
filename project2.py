@@ -11,10 +11,10 @@ class mineSweeper:
     self._length = length
     self._bombs = bombs
     self._revealed = []
-    self._map = self.createMap(height,length,bombs)
+    self._board = self.createBoard(height,length,bombs)
 
 
-  def createMap(self,h,l,b):
+  def createBoard(self,h,l,b):
     print("")
 
   def play(self):
@@ -30,6 +30,7 @@ class mineSweeper:
         revealed = False
       else:
         print("You have already chosen that coordinate")
+    self.check(x,y)
       
   def chooseX(self):
     xLoop = True
@@ -51,6 +52,9 @@ class mineSweeper:
         yLoop = False
     return y
 
+  def check(self,x,y):
+    if self._board[x][y] == "B":
+      self._lose()
 
 
 
