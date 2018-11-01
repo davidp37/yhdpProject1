@@ -14,7 +14,7 @@ class mineSweeper:
 
   def generateBomb(self)-> list:
     # bombCoords stores the coordinates of bombs. 1 for bomb, 0 for no bomb
-    bombCoords = [0] * self._height   
+    bombCoords = [0] * self._height
     for i in range(self._height):
       bombCoords[i] = [0] * self._length
 
@@ -51,52 +51,77 @@ class mineSweeper:
     newBoard = self.countBomb(bombCoords)
     return newBoard
 
-  def play(self):
-    self.select()
-    self.choose()
+  def selectFirst(self):
+    self.select(True)
 
-  def select(self):
+  # calls the functions to decide the coordinate to be chosen then checks if that coordinate has already been chosen or not
+  def select(self,first):
     revealed = True
-    while(revealed):
+    while revealed:
       x = self.chooseX()
       y = self.chooseY()
-      if not self._revealed[x-1][y-1]:
+      if not self._revealed[ x -1][ y -1]:
         revealed = False
       else:
         print("You have already chosen that coordinate")
-    self.check(x,y)
-      
+    self.check(x ,y)
+
+  # Prompts the user to select a valid x coordinate, then returns that x coordinate
   def chooseX(self):
     xLoop = True
-    while(xLoop):
-      x = input("Select an x coordinate: ")
-      if x>self._length or x<0:
-        print("Invalid x")
+    while xLoop :
+      x = int(input("Select an x coordinate: "))
+      if x> self._length or x < 0:
+                print("Invalid x")
       else:
-        yloop = False
-    return x
-      
+        xLoop = False
+      return x
+
+    # Prompts the user to select a valid y coordinate, then returns that y coordinate
   def chooseY(self):
     yLoop = True
-    while(yLoop):
-      y = input("Select a y coordinate: ")
-      if y>self._height or y<0:
+    while yLoop:
+      y = int(input("Select a y coordinate: "))
+      if y > self._height or y < 0:
         print("Invalid y")
       else:
         yLoop = False
     return y
 
-  def check(self,x,y):
+    # Checks to see if the spot chosen is a bomb, returns nothing
+  def check(self, x, y):
     if self._board[x][y] == "-1":
       self._lose()
 
 
+  # Prints the board out in the desired form
+
+  def printBoard(self):
+    top = ""
+    row = ""
+    for i in range(self._length):
+      top += " " + i
+    print(top)
+    for j in range (self._height):
+      row = ""
+      for k in range(self._length):
+        row += " "
+        if self._revealed[j][k] == 1:
+          row += self._board[j][k]
+        elif self._revealed[j][k] == "F":
+          row += "F"
+        else:
+          row += "-"
+      print(row)
+
+
 
 def start():
-  height = input("Enter a height: ")
-  length = input("Enter a length: ")
-  bombs = input("Enter the number of bombs: ")
-  game = mineSweeper(height,length,bombs)
-  game.play()
+    height = int(input("Enter a height: "))
+    length = int(input("Enter a length: "))
+    bombs = int(input("Enter the number of bombs: "))
+    game = mineSweeper(height, length, bombs)
+    game.selectFirst()
+
 
 start()
