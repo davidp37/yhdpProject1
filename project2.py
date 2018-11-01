@@ -64,7 +64,7 @@ class mineSweeper:
         revealed = False
       else:
         print("You have already chosen that coordinate")
-    self.check(x ,y)
+    self.check(x ,y,first)
 
   # Prompts the user to select a valid x coordinate, then returns that x coordinate
   def chooseX(self):
@@ -89,8 +89,10 @@ class mineSweeper:
     return y
 
     # Checks to see if the spot chosen is a bomb, returns nothing
-  def check(self, x, y):
-    if self._board[x][y] == "-1":
+  def check(self, x, y,first=False):
+    if self._board[x][y] == -1 and first:
+      self._moveBomb(x,y)
+    elif self._board[x][y] == -1:
       self._lose()
 
 
