@@ -3,28 +3,32 @@ import random
 
 
 
+
 class mineSweeper:
   def __init__(self, height, length, bombs):
-    
     self._height = height
     self._length = length
     self._bombs = bombs
     self._revealed = []
     self._board = self.createBoard(height,length,bombs)
 
-
-<<<<<<< HEAD
   def generateBomb(self)-> list:
     # bombCoords stores the coordinates of bombs. 1 for bomb, 0 for no bomb
-    bombCoords = [0] * _height   
-    for i in range(_height):
-      bombCoords[i] = [0] * _length
+    bombCoords = [0] * self._height   
+    for i in range(self._height):
+      bombCoords[i] = [0] * self._length
+
+    # The number of bombs should not exceed (number of squares - 1)
+    if self._bombs <= (self._height * self._length - 1):
+      bombs = self._bombs
+    else:
+      bombs = self._height * self._length - 1
 
     # Randomly generate bombs
     n = 0
     while n < bombs:
-      x = random.randint(_height, _length)
-      y = random.randint(_height, _length)
+      x = random.randint(self._height, self._length)
+      y = random.randint(self._height, self._length)
       if bombCoords[y][x] == 0:
         bombCoords[y][x] = 1
         n += 1
@@ -32,43 +36,20 @@ class mineSweeper:
       return bombCoords
 
   def countBomb(self, bombCoords: [list])-> list:
-    newMap = [[0 for x in range(_width)] for x in range(_height)]
-    # for height in _height:
-    #   for width in _width:
-    #     # if the coordinate has bomb
-    #     if bombCoords[height][width] == 1:
-    #       newMap[width][height] = -1    # -1 indicates a bomb
-    #     # else the coordinate does not has bomb, count how many neighboring bombs the coordinate has.
-    #     else:
-    for height in _height:
-      for width in _width:
+    newMap = [[0 for x in range(self._length)] for x in range(self._height)]
+    for height in self._height:
+      for width in self._length:
         count = -bombCoords[i][j]   # count stores the number of neiboring bombs
           for x in [-1,0,1]:
             for y in [-1,0,1]:
-              if 0 <= height + x < _height and 0 <= width + y < _width:
+              if 0 <= height + x < self._height and 0 <= width + y < self._length:
                 count += bombCoords[height + x][width + y]
         newMap[height][width] = count
 
-
-
   def createBoard(self)-> list:
-    # newMap = [0] * _height
-    # for i in range(_height):
-    #   newMap[i] = [0] * _length
-    # newMap = [[0 for x in range(_width)] for x in range(_height)]
     bombCoords = generateBomb()
     newBoard = countBomb(bombCoords)
     return newBoard
-
-
-
-
-
-
-=======
-  def createBoard(self,h,l,b):
-    print("")
->>>>>>> 93d3054d614f9af55a9634d1ad64cb845bc93acf
 
   def play(self):
     self.select()
@@ -118,8 +99,4 @@ def start():
   game = mineSweeper(height,length,bombs)
   game.play()
 
-<<<<<<< HEAD
 start()
-=======
-start()
->>>>>>> 93d3054d614f9af55a9634d1ad64cb845bc93acf
