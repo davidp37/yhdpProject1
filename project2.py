@@ -97,7 +97,10 @@ class mineSweeper:
     if self._board[x][y] == "-1":
       self._lose()
 
-  def printMap(self):
+
+  # Prints the board out in the desired form
+
+  def printBoard(self):
     top = ""
     row = ""
     for i in range(self._length):
