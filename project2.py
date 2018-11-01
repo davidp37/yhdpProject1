@@ -3,12 +3,17 @@ import random
 
 
 
-
 class mineSweeper:
   def __init__(self, height, length, bombs):
-    createMap(height,length,bombs)
+    
+    self._height = height
+    self._length = length
+    self._bombs = bombs
+    self._revealed = []
+    self._board = self.createBoard(height,length,bombs)
 
 
+<<<<<<< HEAD
   def generateBomb(self)-> list:
     # bombCoords stores the coordinates of bombs. 1 for bomb, 0 for no bomb
     bombCoords = [0] * _height   
@@ -60,10 +65,49 @@ class mineSweeper:
 
 
 
+=======
+  def createBoard(self,h,l,b):
+    print("")
+>>>>>>> 93d3054d614f9af55a9634d1ad64cb845bc93acf
 
   def play(self):
-    print("")
+    self.select()
+    self.choose()
 
+  def select(self):
+    revealed = True
+    while(revealed):
+      x = self.chooseX()
+      y = self.chooseY()
+      if not self._revealed[x-1][y-1]:
+        revealed = False
+      else:
+        print("You have already chosen that coordinate")
+    self.check(x,y)
+      
+  def chooseX(self):
+    xLoop = True
+    while(xLoop):
+      x = input("Select an x coordinate: ")
+      if x>self._length or x<0:
+        print("Invalid x")
+      else:
+        yloop = False
+    return x
+      
+  def chooseY(self):
+    yLoop = True
+    while(yLoop):
+      y = input("Select a y coordinate: ")
+      if y>self._height or y<0:
+        print("Invalid y")
+      else:
+        yLoop = False
+    return y
+
+  def check(self,x,y):
+    if self._board[x][y] == "-1":
+      self._lose()
 
 
 
@@ -74,4 +118,8 @@ def start():
   game = mineSweeper(height,length,bombs)
   game.play()
 
+<<<<<<< HEAD
 start()
+=======
+start()
+>>>>>>> 93d3054d614f9af55a9634d1ad64cb845bc93acf
