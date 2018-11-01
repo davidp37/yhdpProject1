@@ -10,7 +10,7 @@ class mineSweeper:
     self._length = length
     self._bombs = bombs
     self._revealed = []
-    self._board = self.createBoard(height,length,bombs)
+    self._board = self.createBoard()
 
   def generateBomb(self)-> list:
     # bombCoords stores the coordinates of bombs. 1 for bomb, 0 for no bomb
@@ -40,15 +40,15 @@ class mineSweeper:
     for height in self._height:
       for width in self._length:
         count = -bombCoords[i][j]   # count stores the number of neiboring bombs
-          for x in [-1,0,1]:
-            for y in [-1,0,1]:
-              if 0 <= height + x < self._height and 0 <= width + y < self._length:
-                count += bombCoords[height + x][width + y]
+        for x in [-1,0,1]:
+          for y in [-1,0,1]:
+            if 0 <= height + x < self._height and 0 <= width + y < self._length:
+              count += bombCoords[height + x][width + y]
         newMap[height][width] = count
 
   def createBoard(self)-> list:
-    bombCoords = generateBomb()
-    newBoard = countBomb(bombCoords)
+    bombCoords = self.generateBomb()
+    newBoard = self.countBomb(bombCoords)
     return newBoard
 
   def play(self):
