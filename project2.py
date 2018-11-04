@@ -155,8 +155,8 @@ class mineSweeper:
   def select(self):
     selected = False
     while not selected:
-      x = print("Select an x coordinate: ")
-      y = print("Select an y coordinate: ")
+      x = input("Select an x coordinate: ")
+      y = input("Select an y coordinate: ")
       if self.checkValid(x, y):
         selected = True
 
@@ -171,8 +171,8 @@ class mineSweeper:
   def selectFirst(self):
     selected = False
     while not selected:
-      x = str(print("Select an x coordinate: "))
-      y = str(print("Select an y coordinate: "))
+      x = str(input("Select an x coordinate: "))
+      y = str(input("Select an y coordinate: "))
       if self.checkValid(x, y):
         selected = True
 
@@ -189,6 +189,7 @@ class mineSweeper:
         print(self._board[x][y], end = '')
 
 
+  # Check if the coordinate is valid and if the cell of that coordinate is "Flagged" or "not flagged"
   def _checkFlag(self, x = "", y = "")-> str:
       if not (x.isdigit() or y.isdigit()):
         print("Error: Enter an integer for the coordinate.")
