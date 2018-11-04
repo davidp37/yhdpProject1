@@ -217,6 +217,7 @@ def start():
     length = int(input("Enter a length: "))
     bombs = int(input("Enter the number of bombs: "))
     game = mineSweeper(height, length, bombs)
+    game.print()
     game.selectFirst()
     game.print()
 
@@ -227,13 +228,22 @@ playAgain = "yes"
 while playAgain == "yes" or playAgain == "Yes":
   start()
   while game.checkStatus() == "in progress":
-    game.select()
+    command = str(input("\"select\" or \"flag\" or \"unflag\"?: "))
+    if command == "select":
+      game.select()
+    elif command == "flag":
+      game.flag()
+    elif command == "unflag":
+      game.unflag()
+    else:
+      print("Invalid input.")
     game.print()
+    
   if game.checkStatus() == "win":
     win += 1
   elif gam.checkStatus() == "lose":
     lose += 1
-  playAgain = str(input("Do you want to play again (\"yes\" or \"no\")? ")
+  playAgain = str(input("Do you want to play again (\"yes\" or \"no\")?:  ")
 
 print("Win: ", win, " Lose: ", lose)
 
