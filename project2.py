@@ -5,7 +5,7 @@ import random
 
 
 class mineSweeper:
-  def __init__(self, height, length, bombs):
+  def __init__(self, height: int, length: int, bombs: int):
     self._height = height
     self._length = length
     self._bombs = bombs
@@ -25,7 +25,7 @@ class mineSweeper:
     top = ""
     row = ""
     for i in range(self._length):
-      top += " " + i
+      top += " " + str(i)
     print(top)
     for j in range (self._height):
       row = ""
@@ -42,21 +42,20 @@ class mineSweeper:
 
   # checkValid – check if the coordinates are a valid coordinate on the board 
   # and that the state of that coordinate has not been revealed yet
-  def checkValid(self, x, y)-> bool:
+  def checkValid(self, x = "", y = "")-> bool:
       if not (x.isdigit() or y.isdigit()):
-        print("Error: Enter an integer for the coordinate.")
+        print("Error: Enter integers for the coordinate.")
         return False
       
       x = int(x)
       y = int(y)
       if 0 <= x <= self._length and 0 <= y <= self._height:
-        if self._revealed[y][x] != "Flagged":
-          if not self._revealed[y][x]:
-            return True
-          else:
-            print("Error: The coordinate you entered has already been revealed.")
-            return False
-        else:
+        if self._revealed[y][x] == False:
+          return True
+        elif self._revealed[y][x] == True:
+          print("Error: The coordinate you entered has already been revealed.")
+          return False
+        elif self._revealed[y][x] == "Flagged":
           print("Error: The coordinate you entered is flagged.")
           return False
       else:
@@ -81,8 +80,8 @@ class mineSweeper:
     # Randomly generate bombs
     n = 0
     while n < bombs:
-      x = random.randint(self._height, self._length - 1)
-      y = random.randint(self._height, self._length - 1)
+      x = random.randint(0, self._length - 1)
+      y = random.randint(0, self._height - 1)
       if bombCoords[y][x] == 0:
         bombCoords[y][x] = 1
         n += 1
@@ -92,21 +91,21 @@ class mineSweeper:
 
   # Count the number of neiboring bombs for each cell
   # Mark as 'B' for the cell with a bomb
-  def _countBomb(self, bombCoords: [list])-> list:
+  def _countBomb(self, bombCoords: list)-> list:
     newMap = [[0 for x in range(self._length)] for x in range(self._height)]
-    for height in self._height:
-      for width in self._length:
+    for y in range(self._height):
+      for x in range(self._length):
         # if the cell is NOT a bomb
-        if bombCoords[height][width] != 1:
-          count = -bombCoords[i][j]   # count stores the number of neiboring bombs
-          for x in [-1,0,1]:
-            for y in [-1,0,1]:
-              if 0 <= height + x < self._height and 0 <= width + y < self._length:
-                count += bombCoords[height + x][width + y]
-          newMap[height][width] = count
+        if bombCoords[y][x] != 1:
+          count = -bombCoords[y][x]   # count stores the number of neiboring bombs
+          for s in [-1,0,1]:
+            for t in [-1,0,1]:
+              if 0 <= y + s < self._height and 0 <= x + t < self._length:
+                count += bombCoords[y + s][x + t]
+          newMap[y][x] = count
         # if the cell is a bomb
         else:
-          newMap[height][width] = 'B'
+          newMap[y][x] = 'B'
     return newMap
 
 
@@ -118,7 +117,7 @@ class mineSweeper:
 
 
   # Recreates the board by moving the bomb at (oldX, oldY) chosen in the first turn to new cell at (newX, newY)
-  def _recreateBoard(self, oldX, oldY, newX, newY):
+  def _recreateBoard(self, oldX: int, oldY: int, newX: int, newY: int):
     oldBoard = self._board.copy()
 
     # bombCoords represents the board and stores 1 for cell with bomb, 0 for a cell with non bomb
@@ -138,7 +137,7 @@ class mineSweeper:
 
 
   # Choose the new coordinate (newX, newY) for the bomb in (x, y) to be moved to
-  def _moveBomb(self, x, y):
+  def _moveBomb(self, x: int, y: int):
     moved = False
     while not moved:
       newX = random.randint(1, self._length - 1)
@@ -146,8 +145,8 @@ class mineSweeper:
       while not checkValid(newX, newY):
         newX = random.randint(1, self._length - 1)
         newY = random.randint(1, self._height - 1)
-      if self._board[newY][newX] != 'B'
-        self._recreateBoard(newX, newY)
+      if self._board[newY][newX] != 'B':
+        self._recreateBoard(x, y, newX, newY)
         moved = True
 
 
@@ -172,14 +171,14 @@ class mineSweeper:
   def selectFirst(self):
     selected = False
     while not selected:
-      x = print("Select an x coordinate: ")
-      y = print("Select an y coordinate: ")
+      x = str(print("Select an x coordinate: "))
+      y = str(print("Select an y coordinate: "))
       if self.checkValid(x, y):
         selected = True
 
     # After a valid coodinate is selected...
     self._revealed[y][x] = True
-    if self._board[y][x] = 'B':
+    if self._board[y][x] == 'B':
       self._moveBomb(x, y)
 
 
@@ -189,16 +188,41 @@ class mineSweeper:
       for x in self._board[y]:
         print(self._board[x][y], end = '')
 
+
+  def _checkFlag(self, x = "", y = "")-> str:
+      if not (x.isdigit() or y.isdigit()):
+        print("Error: Enter an integer for the coordinate.")
+        return False
+      
+      x = int(x)
+      y = int(y)
+      if 0 <= x <= self._length and 0 <= y <= self._height:
+        if self._revealed[y][x] == "Flagged":
+          return "Flagged"
+        elif self._revealed[y][x] == False:
+          return "not flagged"
+        elif self._revealed[y][x] == True:
+          print("Error: The coordinate you entered has already been revealed.")
+          return ""
+      else:
+        print("Error: The coordinate you entered is out of the board.")
+        return ""
+
+
   # flag – takes a coordinate to flag for a bomb. Should give an error message if the coordinate is not blank or if it is invalid. 
-  def flag(self, x, y):
-    if self._checkValid4Flag(x, y):
-      self._revealed = "Flagged"
+  def flag(self):
+    x = print("Select an x coordinate: ")
+    y = print("Select an y coordinate: ")
+    if self._checkFlag(x, y) == "not flagged":
+      self._revealed[y][x] = "Flagged"
 
 
   # unflag - takes a coordinate to unflag a bomb. Should give an error message if the coordinate was not flagged or if it is an invalid coordinate. 
-  def unflag(self, x, y):
-    if self._checkValid4Unflag(x, y):
-      self._revealed = False
+  def unflag(self):
+    x = print("Select an x coordinate: ")
+    y = print("Select an y coordinate: ")
+    if self._checkFlag(x, y) == "Flagged":
+      self._revealed[y][x] = False
 
 
   # checkStatus – returns the status of the game: win, lose, in progress
@@ -213,13 +237,25 @@ START OF DRIVER SCRIPT
 You will be writing Driver script that will create a Minesweeper object every time a new game is started. This will be what “drives” the game. It should make the appropriate calls to the methods in Minesweeper depending on decisions made by the player. It should also keep track of how many games have been won or lost.
 """
 def start():
-    height = int(input("Enter a height: "))
-    length = int(input("Enter a length: "))
-    bombs = int(input("Enter the number of bombs: "))
-    game = mineSweeper(height, length, bombs)
-    game.print()
-    game.selectFirst()
-    game.print()
+  valid = False
+  while not valid:
+    height = input("Enter a height: ")
+    length = input("Enter a length: ")
+    bombs = input("Enter the number of bombs: ")
+    if height.isdigit() and length.isdigit() and bombs.isdigit():
+      if height != '0' and length != '0' and bombs != '0':
+        height = int(height)
+        length = int(length)
+        bombs = int(bombs)
+        valid = True
+      else:
+        print("Invalid input: Must be positive integer.")
+    else:
+      print("Invalid input: Must be positive integer.")
+  game = mineSweeper(height, length, bombs)
+  game.print()
+  game.selectFirst()
+  game.print()
 
 
 win = 0
@@ -238,12 +274,12 @@ while playAgain == "yes" or playAgain == "Yes":
     else:
       print("Invalid input.")
     game.print()
-    
+
   if game.checkStatus() == "win":
     win += 1
   elif gam.checkStatus() == "lose":
     lose += 1
-  playAgain = str(input("Do you want to play again (\"yes\" or \"no\")?:  ")
+  playAgain = str(input("Do you want to play again (\"yes\" or \"no\")?:  "))
 
 print("Win: ", win, " Lose: ", lose)
 
