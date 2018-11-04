@@ -1,8 +1,8 @@
 import random
 
 
-
-
+''' This seems fine, just a few of the functions are different, so just paste it over the master branch.
+    I have a backup copy saved if something doesn't work right, but it seems good to me. '''
 
 class mineSweeper:
   def __init__(self, height: int, length: int, bombs: int):
@@ -229,6 +229,8 @@ class mineSweeper:
   # checkStatus – returns the status of the game: win, lose, in progress
   def checkStatus(self):
     return self._status
+
+
 
 
 """
