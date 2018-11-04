@@ -10,9 +10,9 @@ class mineSweeper:
     self._length = length
     self._bombs = bombs
     self._board = self._createBoard()
-    self._win = 0
-    self._loss = 0
-    self._inprogress = True
+
+    # [str] Stores the status of the game: "win", "lose", "in progress"
+    self._status = "in progress"
 
     # _revealed stores True for revealed cell, False for unrevealed cell, or "Flagged" for a flagged cell
     self._revealed = [0] * self._height
@@ -134,11 +134,10 @@ class mineSweeper:
         elif x != oldX and y != oldY:
           if oldBoard[y][x] == 'B':
             bombCoords[y][x] = 1
-
     self._board = self._countBomb(bombCoords)
 
 
-  # Moves the bomb in (x, y) to (newX, newY)
+  # Choose the new coordinate (newX, newY) for the bomb in (x, y) to be moved to
   def _moveBomb(self, x, y):
     moved = False
     while not moved:
@@ -152,38 +151,36 @@ class mineSweeper:
         moved = True
 
 
-
-  # Checks to see if the spot chosen is a bomb, returns nothing
-  # (x, y) is supposed to be verified beforehand, in select().
-  def _checkBomb(self, x, y,first = False):
-    self._revealed[y][x] = True
-    if self._board[y][x] == 'B'
-      if first:
-        self._moveBomb(x,y)
-      else:
-        self._lose()
-    else:
-      self.select(False)
-
-
   # Takes the coordinate and returns a message if it is not a valid coordinate or if it is not blank. 
   # If it is, it will reveal the appropriate information for the square and its adjacent squares (according to the rules)
-  def select(self, first):
+  def select(self):
     selected = False
     while not selected:
       x = print("Select an x coordinate: ")
       y = print("Select an y coordinate: ")
-
       if self.checkValid(x, y):
         selected = True
 
     # After a valid coodinate is selected...
     self._revealed[y][x] = True
+    if self._board[y][x] == 'B':
+      self._status = "lose"
+
 
   # Takes the coordinate on the first turn
   # If it is a bomb, it will randomly select another position for the bomb and do everything in select.
   def selectFirst(self):
-    self.select(True)
+    selected = False
+    while not selected:
+      x = print("Select an x coordinate: ")
+      y = print("Select an y coordinate: ")
+      if self.checkValid(x, y):
+        selected = True
+
+    # After a valid coodinate is selected...
+    self._revealed[y][x] = True
+    if self._board[y][x] = 'B':
+      self._moveBomb(x, y)
 
 
   #  returns the solution of the board for testing purposes only. This method will allow us to test your program, but you should not be calling/using it, other than for testing purposes.
@@ -206,14 +203,14 @@ class mineSweeper:
 
   # checkStatus – returns the status of the game: win, lose, in progress
   def checkStatus(self):
-    print("Win: ", self._win, " Lose: ", self._lose)
-
+    return self._status
 
 
 """
 END OF CLASS DEFINITION
 ========================
-START OF MAIN
+START OF DRIVER SCRIPT
+You will be writing Driver script that will create a Minesweeper object every time a new game is started. This will be what “drives” the game. It should make the appropriate calls to the methods in Minesweeper depending on decisions made by the player. It should also keep track of how many games have been won or lost.
 """
 def start():
     height = int(input("Enter a height: "))
@@ -221,7 +218,24 @@ def start():
     bombs = int(input("Enter the number of bombs: "))
     game = mineSweeper(height, length, bombs)
     game.selectFirst()
+    game.print()
 
 
-start()
+win = 0
+lose = 0
+playAgain = "yes"
+while playAgain == "yes" or playAgain == "Yes":
+  start()
+  while game.checkStatus() == "in progress":
+    game.select()
+    game.print()
+  if game.checkStatus() == "win":
+    win += 1
+  elif gam.checkStatus() == "lose":
+    lose += 1
+  playAgain = str(input("Do you want to play again (\"yes\" or \"no\")? ")
+
+print("Win: ", win, " Lose: ", lose)
+
+
 
