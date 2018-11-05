@@ -1,8 +1,10 @@
+"""
+ICS 32A: 36600
+Worked by David Javier Parra and Yoshitaka Hiramatsu
+
+project2.py
+"""
 import random
-
-
-
-
 
 class mineSweeper:
   def __init__(self, height: int, length: int, bombs: int):
@@ -19,10 +21,6 @@ class mineSweeper:
 
   # Prints the board out in the desired form
   def print(self):
-    if self._status == "lose":
-      for y in range(self._height):
-        for x in range(self._length):
-          self._revealed[y][x] = True
     print("  ", end = '')
     for x in range(self._length):
       print("%3d" % x, end = '')
@@ -41,6 +39,17 @@ class mineSweeper:
         elif self._revealed[y][x] == False:
           print("  -", end = '')
       print()
+
+
+  # Prints unselected bombs besides whatever selected
+  # Only called when the player loses
+  def _printBombs(self):
+    if self._status == "lose":
+      for y in range(self._height):
+        for x in range(self._length):
+          if self._board[y][x] == 'B':
+            self._revealed[y][x] = True
+      self.print()
 
 
   # checkValid – check if the coordinates are a valid coordinate on the board 
@@ -226,13 +235,13 @@ class mineSweeper:
     # After a valid coodinate is selected...
     self._revealed[y][x] = True
 
+    # Check if the first select is Bomb. If so, move it randomly.
+    if self._board[y][x] == 'B':
+      self._moveBomb(x, y)
+
     # If you open a square with 0 neighboring bombs, all its neighbors will automatically open.
     if self._board[y][x] == 0:
       self._revealAroundZero(x, y)
-
-    # Check lose condtion
-    if self._board[y][x] == 'B':
-      self._moveBomb(x, y)
 
     # Check win condtion
     if self._isWin():
@@ -247,7 +256,7 @@ class mineSweeper:
     copy = [row[:] for row in self._revealed]
     status = self._status
     self._status = "lose"
-    self.print()
+    self._printBombs()
     self._revealed = [row[:] for row in copy]
     self._status = status
     print()
@@ -309,6 +318,7 @@ END OF CLASS DEFINITION
 START OF DRIVER SCRIPT
 You will be writing Driver script that will create a Minesweeper object every time a new game is started. This will be what “drives” the game. It should make the appropriate calls to the methods in Minesweeper depending on decisions made by the player. It should also keep track of how many games have been won or lost.
 """
+"""
 def start():
   valid = False
   while not valid:
@@ -364,7 +374,7 @@ while playAgain == "yes" or playAgain == "Yes":
     lose += 1
   playAgain = str(input("Do you want to play again (\"yes\" or \"no\")?:  "))
   print("Win: ", win, " Lose: ", lose)
-
+"""
 
 
 
