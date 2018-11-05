@@ -164,14 +164,23 @@ class mineSweeper:
   # Reveal all the neibors of a square with 0 neighboring bombs.
   # Takes the coordinate of such a square as a parameter
   def _revealAroundZero(self, x: int, y: int):
-    for s in [-1,0,1]:
-      for t in [-1,0,1]:
-        if 0 <= y + s < self._height and 0 <= x + t < self._length:
-          if self._revealed[y + s][x + t] == False and self._board[y + s][x + t] == 0:
-            self._revealed[y + s][x + t] = True
-            self._revealAroundZero(x + t, y + s)
-          else:
-            self._revealed[y + s][x + t] = True
+    # zeroCells stores the coordinates of cells of 0 as a list of lists of 2 elements, x and y
+    zeroCells = [[x, y]]
+    while len(zeroCells) > 0:
+      currentX = zeroCells[0][0]
+      currentY = zeroCells[0][1]
+      zeroCells.pop(0)
+      for s in [-1,0,1]:
+        for t in [-1,0,1]:
+          X = currentX + t
+          Y = currentY + s
+          if 0 <= Y < self._height and 0 <= X < self._length:
+            if self._revealed[Y][X] == False and self._board[Y][X] == 0:
+              self._revealed[Y][X] = True
+              # self._revealAroundZero(x + t, y + s)
+              zeroCells.append([X, Y])
+            else:
+              self._revealed[Y][X] = True
 
 
   # Takes the coordinate and returns a message if it is not a valid coordinate or if it is not blank. 
@@ -201,6 +210,7 @@ class mineSweeper:
     if self._isWin():
       self._status = "win"
 
+
   # Takes the coordinate on the first turn
   # If it is a bomb, it will randomly select another position for the bomb and do everything in select.
   def selectFirst(self):
@@ -228,6 +238,7 @@ class mineSweeper:
     if self._isWin():
       self._status = "win"
 
+
   # Returns the solution of the board for testing purposes only. 
   # This method will allow us to test your program, but you should not be calling/using it, other than for testing purposes.
   def _getSolution(self):
@@ -240,6 +251,7 @@ class mineSweeper:
     self._revealed = [row[:] for row in copy]
     self._status = status
     print()
+
 
   # Check if the coordinate is valid and if the cell of that coordinate is "Flagged" or "not flagged"
   def _checkFlag(self, x = "", y = "")-> str:
