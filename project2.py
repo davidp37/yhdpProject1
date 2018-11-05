@@ -14,10 +14,6 @@ class mineSweeper:
     # [str] Stores the status of the game: "win", "lose", "in progress"
     self._status = "in progress"
 
-    # _revealed stores True for revealed cell, False for unrevealed cell, or "Flagged" for a flagged cell
-    # self._revealed = [0] * self._height
-    # for i in range(self._height):
-    #   self._revealed[i] = [0] * self._length
     self._revealed = [[0 for x in range(self._length)] for x in range(self._height)]
 
 
@@ -27,22 +23,24 @@ class mineSweeper:
       for y in range(self._height):
         for x in range(self._length):
           self._revealed[y][x] = True
-    top = ""
-    row = ""
-    for i in range(self._length):
-      top += " " + str(i)
-    print(top)
-    for j in range (self._height):
-      row = ""
-      for k in range(self._length):
-        row += " "
-        if self._revealed[j][k] == True:
-          row += str(self._board[j][k])
-        elif self._revealed[j][k] == "Flagged":
-          row += "F"
-        elif self._revealed[j][k] == False:
-          row += "-"
-      print(row)
+    print("  ", end = '')
+    for x in range(self._length):
+      print("%3d" % x, end = '')
+    print()
+    for y in range(self._height):
+      print("%2d" % y, end = '')
+      for x in range(self._length):
+        if self._revealed[y][x] == True:
+          cell = self._board[y][x]
+          if type(cell) == int:
+            print("%3d" % cell, end = '')
+          elif cell == 'B':
+            print("%3s" % cell, end = '')
+        elif self._revealed[y][x] == "Flagged":
+          print("  F", end = '')
+        elif self._revealed[y][x] == False:
+          print("  -", end = '')
+      print()
 
 
   # checkValid – check if the coordinates are a valid coordinate on the board 
@@ -76,22 +74,11 @@ class mineSweeper:
   # Creates board with information if each cell has a bomb or not.
   # 1 for bomb, 0 for non bomb
   def _generateBomb(self)-> list:
-    # bombCoords represents the board and stores 1 for cell with bomb, 0 for a cell with non bomb
-    # bombCoords = [0] * self._height
-    # for i in range(self._height):
-    #   bombCoords[i] = [0] * self._length
     bombCoords = [[0 for x in range(self._length)] for x in range(self._height)]
-
-
-    # The number of bombs should not exceed (number of squares - 1)
-    if self._bombs <= (self._height * self._length - 1):
-      bombs = self._bombs
-    else:
-      bombs = self._height * self._length - 1
 
     # Randomly generate bombs
     n = 0
-    while n < bombs:
+    while n < self._bombs:
       x = random.randint(0, self._length - 1)
       y = random.randint(0, self._height - 1)
       if bombCoords[y][x] == 0:
@@ -131,11 +118,6 @@ class mineSweeper:
   # Recreates the board by moving the bomb at (oldX, oldY) chosen in the first turn to new cell at (newX, newY)
   def _recreateBoard(self, oldX: int, oldY: int, newX: int, newY: int):
     oldBoard = [row[:] for row in self._board.copy()]
-
-    # bombCoords represents the board and stores 1 for cell with bomb, 0 for a cell with non bomb
-    # bombCoords = [0] * self._height
-    # for i in range(self._height):
-    #   bombCoords[i] = [0] * self._length
     bombCoords = [[0 for x in range(self._length)] for x in range(self._height)]
 
     # Move the bomb and recreate the board
@@ -179,6 +161,19 @@ class mineSweeper:
     return True
 
 
+  # Reveal all the neibors of a square with 0 neighboring bombs.
+  # Takes the coordinate of such a square as a parameter
+  def _revealAroundZero(self, x: int, y: int):
+    for s in [-1,0,1]:
+      for t in [-1,0,1]:
+        if 0 <= y + s < self._height and 0 <= x + t < self._length:
+          if self._revealed[y + s][x + t] == False and self._board[y + s][x + t] == 0:
+            self._revealed[y + s][x + t] = True
+            self._revealAroundZero(x + t, y + s)
+          else:
+            self._revealed[y + s][x + t] = True
+
+
   # Takes the coordinate and returns a message if it is not a valid coordinate or if it is not blank. 
   # If it is, it will reveal the appropriate information for the square and its adjacent squares (according to the rules)
   def select(self):
@@ -193,6 +188,10 @@ class mineSweeper:
 
     # After a valid coodinate is selected
     self._revealed[y][x] = True
+
+    # If you open a square with 0 neighboring bombs, all its neighbors will automatically open.
+    if self._board[y][x] == 0:
+      self._revealAroundZero(x, y)
 
     # Check lose condtion
     if self._board[y][x] == 'B':
@@ -216,6 +215,12 @@ class mineSweeper:
 
     # After a valid coodinate is selected...
     self._revealed[y][x] = True
+
+    # If you open a square with 0 neighboring bombs, all its neighbors will automatically open.
+    if self._board[y][x] == 0:
+      self._revealAroundZero(x, y)
+
+    # Check lose condtion
     if self._board[y][x] == 'B':
       self._moveBomb(x, y)
 
@@ -299,15 +304,16 @@ def start():
     length = input("Enter a length: ")
     bombs = input("Enter the number of bombs: ")
     if height.isdigit() and length.isdigit() and bombs.isdigit():
-      if height != '0' and length != '0' and bombs != '0':
-        height = int(height)
-        length = int(length)
-        bombs = int(bombs)
+      height = int(height)
+      length = int(length)
+      bombs = int(bombs)
+      # The number of bombs should not exceed (number of squares - 1)
+      if 0 < height < 101 and 0 < length < 101 and 0 < bombs < height * length:
         valid = True
       else:
-        print("Invalid input: Must be positive integer.")
+        print("Invalid input: 0 < height < 101 and 0 < length < 101 and 0 < bombs < height * length - 1")
     else:
-      print("Invalid input: Must be positive integer.")
+      print("Invalid input: Must be an integer")
   game = mineSweeper(height, length, bombs)
 
   ### Remove this line before submission
