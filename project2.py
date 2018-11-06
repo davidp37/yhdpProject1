@@ -215,15 +215,8 @@ class mineSweeper:
 
   # Returns the solution of the board for testing purposes only. 
   # This method will allow us to test your program, but you should not be calling/using it, other than for testing purposes.
-  def _getSolution(self):
-    copy = self._revealed.copy()
-    copy = [row[:] for row in self._revealed]
-    status = self._status
-    self._status = "lose"
-    self._printBombs()
-    self._revealed = [row[:] for row in copy]
-    self._status = status
-    print()
+  def _getSolution(self)-> list:
+    return self._board
 
 
   # Check if the coordinate is valid and if the cell of that coordinate is "Flagged" or "not flagged"
