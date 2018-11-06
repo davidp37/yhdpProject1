@@ -21,23 +21,23 @@ class mineSweeper:
 
   # Prints the board out in the desired form
   def print(self):
-    print("  ", end = '')
+    print("   ", end = '')
     for x in range(self._length):
-      print("%3d" % int(x+1), end = '')
+      print("%4d" % int(x+1), end = '')
     print()
     for y in range(self._height):
-      print("%2d" % int(y+1), end = '')
+      print("%3d" % int(y+1), end = '')
       for x in range(self._length):
         if self._revealed[y][x] == True:
           cell = self._board[y][x]
           if type(cell) == int:
-            print("%3d" % cell, end = '')
+            print("%4d" % cell, end = '')
           elif cell == 'B':
-            print("%3s" % cell, end = '')
+            print("%4s" % cell, end = '')
         elif self._revealed[y][x] == "Flagged":
-          print("  F", end = '')
+          print("   F", end = '')
         elif self._revealed[y][x] == False:
-          print("  -", end = '')
+          print("   -", end = '')
       print()
 
 
