@@ -5,7 +5,7 @@ Worked by David Javier Parra and Yoshitaka Hiramatsu
 Driver Script for Project 2:
 You will be writing Driver script that will create a Minesweeper object every time a new game is started. This will be what “drives” the game. It should make the appropriate calls to the methods in Minesweeper depending on decisions made by the player. It should also keep track of how many games have been won or lost.
 """
-from project2 import mineSweeper
+from minesweeper import mineSweeper
 
 def start()-> mineSweeper:
   valid = False
