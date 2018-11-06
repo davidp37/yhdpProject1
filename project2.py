@@ -171,8 +171,8 @@ class mineSweeper:
   def selectFirst(self):
     selected = False
     while not selected:
-      x = str(input("Select an x coordinate: "))
-      y = str(input("Select an y coordinate: "))
+      x = int(input("Select an x coordinate: "))
+      y = int(input("Select an y coordinate: "))
       if self.checkValid(x, y):
         selected = True
 
