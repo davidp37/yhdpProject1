@@ -23,10 +23,10 @@ class mineSweeper:
   def print(self):
     print("  ", end = '')
     for x in range(self._length):
-      print("%3d" % x, end = '')
+      print("%3d" % int(x+1), end = '')
     print()
     for y in range(self._height):
-      print("%2d" % y, end = '')
+      print("%2d" % int(y+1), end = '')
       for x in range(self._length):
         if self._revealed[y][x] == True:
           cell = self._board[y][x]
@@ -59,8 +59,8 @@ class mineSweeper:
     if type(x) == type(y) == str:
       if not (x.isdigit() and y.isdigit()):
         return False
-      x = int(x)
-      y = int(y)
+      x = int(x)-1
+      y = int(y)-1
 
     if type(x) == type(y) == int:
       if 0 <= x < self._length and 0 <= y < self._height:
@@ -182,16 +182,16 @@ class mineSweeper:
       x = input("Select an x coordinate: ")
       y = input("Select an y coordinate: ")
       if self.checkValid(x, y):
-        x = int(x)
-        y = int(y)
+        x = int(x)-1
+        y = int(y)-1
         selected = True
       else:
         print("Invalid input")
 
-    # After a valid coodinate is selected
+    # After a valid coordinate is selected
     self._revealed[y][x] = True
 
-    # Check lose condtion
+    # Check lose condition
     if self._board[y][x] == 'B':
       if isSelectedFirst:
         self._moveBomb(x, y)
@@ -202,7 +202,7 @@ class mineSweeper:
     if self._board[y][x] == 0:
       self._revealAroundZero(x, y)
 
-    # Check win condtion
+    # Check win condition
     if self._isWin():
       self._status = "win"
 
@@ -225,8 +225,8 @@ class mineSweeper:
       if not (x.isdigit() and y.isdigit()):
         return ""
       
-      x = int(x)
-      y = int(y)
+      x = int(x)-1
+      y = int(y)-1
       if 0 <= x < self._length and 0 <= y < self._height:
         if self._revealed[y][x] == "Flagged":
           return "Flagged"
@@ -243,8 +243,8 @@ class mineSweeper:
     x = input("Select an x coordinate: ")
     y = input("Select an y coordinate: ")
     if self._checkFlag(x, y) == "not flagged":
-      x = int(x)
-      y = int(y)
+      x = int(x)-1
+      y = int(y)-1
       self._revealed[y][x] = "Flagged"
     elif self._checkFlag(x, y) == "Flagged":
       print("Invalid Input: The coordinate you entered is already flagged.")
@@ -257,8 +257,8 @@ class mineSweeper:
     x = input("Select an x coordinate: ")
     y = input("Select an y coordinate: ")
     if self._checkFlag(x, y) == "Flagged":
-      x = int(x)
-      y = int(y)
+      x = int(x)-1
+      y = int(y)-1
       self._revealed[y][x] = False
     elif self._checkFlag(x, y) == "not flagged":
       print("Invalid Input: The coordinate you entered is not flagged yet.")
